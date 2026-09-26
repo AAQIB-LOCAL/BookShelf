@@ -1,26 +1,36 @@
 package com.example.servlet;
 
 import com.example.service.BookService;
+import com.example.web.ApplicationContextListener;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 
 public class AddBookServlet extends HttpServlet {
-    private final BookService bookService = BookService.getInstance();
+    private BookService getBookService() {
+        return (BookService) getServletContext().getAttribute(
+            ApplicationContextListener.BOOK_SERVICE_ATTRIBUTE
+        );
+    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String title = request.getParameter("title");
+        String author = request.getParameter("author");
+        String isbn = request.getParameter("isbn");
+
         try {
-            bookService.addBook(request.getParameter("title"), request.getParameter("author"), request.getParameter("isbn"));
+            getBookService().addBook(title, author, isbn);
             response.sendRedirect(request.getContextPath() + "/viewBooks");
         } catch (IllegalArgumentException exception) {
-            String error = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8.name());
-            response.sendRedirect(request.getContextPath() + "/addBook.jsp?error=" + error);
+            request.setAttribute("error", exception.getMessage());
+            request.setAttribute("title", title);
+            request.setAttribute("author", author);
+            request.setAttribute("isbn", isbn);
+            request.getRequestDispatcher("/addBook.jsp").forward(request, response);
         }
     }
 
