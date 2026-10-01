@@ -13,20 +13,34 @@
         <servlet-name>AddBookServlet</servlet-name>
         <servlet-class>com.example.servlet.AddBookServlet</servlet-class>
     </servlet>
-
     <servlet>
         <servlet-name>ViewBooksServlet</servlet-name>
         <servlet-class>com.example.servlet.ViewBooksServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>EditBookServlet</servlet-name>
+        <servlet-class>com.example.servlet.EditBookServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <servlet-class>com.example.servlet.DeleteBookServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>AddBookServlet</servlet-name>
         <url-pattern>/addBook</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
         <servlet-name>ViewBooksServlet</servlet-name>
         <url-pattern>/viewBooks</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditBookServlet</servlet-name>
+        <url-pattern>/editBook</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>DeleteBookServlet</servlet-name>
+        <url-pattern>/deleteBook</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>

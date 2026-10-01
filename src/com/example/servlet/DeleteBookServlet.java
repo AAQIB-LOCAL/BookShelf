@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class ViewBooksServlet extends HttpServlet {
+public class DeleteBookServlet extends HttpServlet {
     private BookService getBookService() {
         return (BookService) getServletContext().getAttribute(
             ApplicationContextListener.BOOK_SERVICE_ATTRIBUTE
@@ -16,10 +16,13 @@ public class ViewBooksServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        request.setAttribute("books", getBookService().searchBooks(request.getParameter("q")));
-        request.setAttribute("query", request.getParameter("q"));
-        request.getRequestDispatcher("/viewBooks.jsp").forward(request, response);
+        try {
+            getBookService().deleteBook(request.getParameter("isbn"));
+            response.sendRedirect(request.getContextPath() + "/viewBooks");
+        } catch (IllegalArgumentException exception) {
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, exception.getMessage());
+        }
     }
 }
